@@ -28,6 +28,7 @@ class sortPort {
 	public function includes() {
 		require_once( SP_INCLUDES . 'post-type.php' );
 		require_once( SP_INCLUDES . 'taxonomy.php' );
+		require_once( SP_INCLUDES . 'template-tags.php' );
 	}
 	
 	public function scripts_and_styles() {
