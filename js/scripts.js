@@ -1,1 +1,0 @@
-$('.test').addClass('tested');

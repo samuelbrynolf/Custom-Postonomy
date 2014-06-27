@@ -32,12 +32,17 @@ class sortPort {
 	}
 	
 	public function scripts_and_styles() {
+	
 		// http://wordpress.stackexchange.com/questions/99067/enqueue-scripts-inside-a-class-in-a-plugin
+		
 		function runScripts(){
-	    wp_register_script( 'custom-script', plugins_url( '/js/scripts.js', __FILE__ ), array('jquery'), ' ', TRUE );
+	    wp_register_script( 'functions', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+	    wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
 	    
 	    //if(is-portfolio specifik template eller taxonomi specifik tempalte fšr JUST mina plugins --> ){
-	    	 wp_enqueue_script('custom-script');
+	    	wp_enqueue_script( 'jquery' );
+	    	//wp_enqueue_script('functions');
+	    	wp_enqueue_script('bundled'); // Bundled version = compressed historyJS + functions. Already using history.js? Enqueue only functionsMin
 	    //}
 	   
 		}
