@@ -1,3 +1,7 @@
+.m-filters__a.s-is-current{
+	color: #333;
+}
+
 .m-sample{
 	position: relative;
 	min-height: 500px;

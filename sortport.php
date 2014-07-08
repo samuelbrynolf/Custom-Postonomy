@@ -55,6 +55,4 @@ class sortPort {
 	}
 }
 
-new sortPort(); 
-
-?>
+new sortPort(); ?>
