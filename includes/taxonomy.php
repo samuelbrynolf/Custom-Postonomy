@@ -1,7 +1,5 @@
-<?php if ( ! function_exists( 'init_portfolio_tax' ) ) {
-
+<?php if (!function_exists('init_portfolio_tax')){
 	function init_portfolio_tax() {
-	
 		$labels = array(
 			'name'                       => 'Objekttyper',
 			'singular_name'              => 'Objekttyp',
@@ -31,9 +29,6 @@
 			'query_var' => true
 		);
 		register_taxonomy( 'objekttyp', array( 'portfolio' ), $args );
-	
 	}
-	
 	add_action( 'init', 'init_portfolio_tax', 0 );
-
 } ?>

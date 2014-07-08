@@ -1,8 +1,5 @@
-<?php if ( ! function_exists('init_portfolio_custom_pt') ) {
-
-	// Register Custom Post Type
+<?php if (!function_exists('init_portfolio_custom_pt')){
 	function init_portfolio_custom_pt() {
-	
 		$labels = array(
 			'name'                => 'Portfolio',
 			'singular_name'       => 'Portfolio',
@@ -39,11 +36,8 @@
 			'capability_type'     => 'page',
 			'taxonomies' => array('post_tag')
 		);
-		
 		register_post_type( 'portfolio', $args );
 	}
-	
-	// Hook into the 'init' action
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
 	
 	function post_type_tags_fix($request) {
@@ -51,7 +45,5 @@
 	  $request['post_type'] = 'any';
 	  return $request;
 	} 
-	
-	add_filter('request', 'post_type_tags_fix');
-
+	add_filter('request', 'post_type_tags_fix'); 
 } ?>
