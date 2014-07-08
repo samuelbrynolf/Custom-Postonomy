@@ -34,7 +34,7 @@ $spj(function() {
 	links.each(function(index) {
 		var $this = $spj(this);
 		$this.attr('data-id', 'link' + index);
-	}).on('click', function(e) {
+	}).bind('tap', function(e) {
 		e.preventDefault();
 		var $this = $spj(this);
 		var loadUrl = $this.attr('href') + ' ' + $this.attr('data-role') + ' > *';
