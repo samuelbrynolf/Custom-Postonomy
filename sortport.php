@@ -36,13 +36,17 @@ class sortPort {
 		// http://wordpress.stackexchange.com/questions/99067/enqueue-scripts-inside-a-class-in-a-plugin
 		
 		function runScripts(){
-	    wp_register_script( 'functions', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-	    wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script( 'historyJS', plugins_url( '/js/jquery.history.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script( 'tappy', plugins_url( '/js/tappy.js', __FILE__ ), array('jquery'), ' ', TRUE );
+	    wp_register_script( 'functions', plugins_url( '/js/functions.js', __FILE__ ), array('jquery'), ' ', TRUE );
+	    //wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
 	    
 	    //if(is-portfolio specifik template eller taxonomi specifik tempalte fšr JUST mina plugins --> ){
 	    	wp_enqueue_script( 'jquery' );
-	    	//wp_enqueue_script('functions');
-	    	wp_enqueue_script('bundled'); // Bundled version = compressed historyJS + functions. Already using history.js? Enqueue only functionsMin
+	    	wp_enqueue_script('historyJS');
+	    	wp_enqueue_script('tappy');
+	    	wp_enqueue_script('functions');
+	    	//wp_enqueue_script('bundled'); // Bundled version = compressed historyJS + functions. Already using history.js? Enqueue only functionsMin
 	    //}
 	   
 		}
