@@ -12,6 +12,8 @@ $spj(function() {
 		var caller = $spj('[data-id=' + state.caller + ']');
 		if ($spj('#loadMessage').length === 0) {
 			$spj('<p id="loadMessage">Laddar...</p>').insertBefore(loadTarget);
+			//$spj('<p id="loadMessage">Laddar...</p>').insertBefore(loadTarget);
+			//loadTarget.append('<p id="loadMessage">Laddar...</p>');
 		}
 		
 		var loadmsg = $spj('#loadMessage');
