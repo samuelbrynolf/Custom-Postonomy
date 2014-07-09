@@ -1,43 +1,40 @@
-<?php function terms_as_nav(){
-	//if (is_post_type_archive('portfolio')) {
-		global $wp;
-		$current_url = home_url( $wp->request );
-	//}
+<?php function sp_filter_portfolio(){
+	global $wp;
+	$current_url = home_url( $wp->request );
+	$terms = get_terms( 'objekttyp' );
 
-	$args = array( 'hide_empty=0' );
-	$terms = get_terms('type', $args);
-	$count = count($terms); $i=0;
+	echo '<ul id="js-list" class="m-list my_term-archive"><li><a class="tappilyTap m-filters__a s-is-appHome s-is-current" href="'.$current_url.'" data-role="#js-sample">Alla</a></li>';
 
-	if ($count > 0) {
-
-		//if (is_post_type_archive('portfolio')) {
-			$term_list = '<ul id="js-filters" class="m-filters"><li><a class="tappy m-filters__a s-is-appHome s-is-current" href="'.$current_url.'" data-role="#js-sample">Alla</a></li>';
-		//} elseif (is_tax('objektsTyp')) {
-		//	$term_list = '<ul id="js-filters" class="m-filters"><li><a class="tappy m-filters__a" href="'.get_bloginfo('url').'/portfolio">Alla</a></li>';
-		//}
-
-		foreach ($terms as $term) {
-			$i++;
-			$term_list .= '<li><a class="tappy m-filters__a" href="' . get_term_link( $term ) . '" title="' . sprintf(__('View all post filed under %s', 'my_localization_domain'), $term->name) . '" data-role="#js-sample">' . $term->name . '</a></li>';
-			if ($count != $i) $term_list .= ''; else $term_list .= '</ul>';
+		foreach ( $terms as $term ) {
+	    $term = sanitize_term( $term, 'objekttyp' );
+	    $term_link = get_term_link( $term, 'objekttyp' );
+	    if ( is_wp_error( $term_link ) ) {
+	        continue;
+	    }
+	    echo '<li><a class="tappilyTap m-filters__a" href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-sample">' . $term->name . '</a></li>';
 		}
 
-		echo $term_list;
-	}
+	echo '</ul>'; 
 }
 
-function loop_template($part){
-	// http://9seeds.com/tech/including-templates-inside-a-plugin/
-	// http://codex.wordpress.org/Plugin_API/Filter_Reference/template_include
-	echo '<div id="js-sample">';
-	if (is_post_type_archive('portfolio')) {
-		echo 'test';
-	}
-
-	query_posts('showposts=-1');
-	if (have_posts()) { while (have_posts()) { the_post();
-			get_template_part($part);
-		}}
-
-	echo '</div>';
+function sp_loop_template($part){
+	$args = array(
+		'post_type' => 'portfolio',
+		'orderby' => 'menu_order',
+		'order' => 'ASC',
+		'posts_per_page' => '-1'
+	);
+	
+	echo '<ul id="js-sample" class="l-span-A6 m-sample">';
+	
+		$portfolioitems = new WP_Query( $args );
+		if( $portfolioitems->have_posts() ) {
+		  while( $portfolioitems->have_posts() ) {
+		  	$portfolioitems->the_post();
+		    get_template_part($part);
+		  }
+		} else {
+		  echo 'Inga objekt inlagda&hellip;';
+		}
+	echo '</ul>';
 } ?>
