@@ -8,7 +8,7 @@
 			'all_items'           => 'All items',
 			'view_item'           => 'View item',
 			'add_new_item'        => 'Add new item to portfolio',
-			'add_new'             => 'Add',
+			'add_new'             => 'New item',
 			'edit_item'           => 'Edit item',
 			'update_item'         => 'Update item',
 			'search_items'        => 'Search items',

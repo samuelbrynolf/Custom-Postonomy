@@ -25,7 +25,9 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 			query_posts($query_string . '&orderby=menu_order&order=ASC&posts_per_page=-1');		
 			if (have_posts()) { 
 				while (have_posts()) { the_post();
-					get_template_part($templatePart);
+					echo '<li>';
+						get_template_part($templatePart);
+					echo '</li>';
 				}
 			} else {
 			  echo 'No items added yet.';
@@ -44,7 +46,9 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 			if($cptItems->have_posts()){
 			  while($cptItems->have_posts()){
 			  	$cptItems->the_post();
-			    get_template_part($templatePart);
+			    echo '<li>';
+						get_template_part($templatePart);
+					echo '</li>';
 			  }
 			} else {
 			  echo 'No items added yet.';
