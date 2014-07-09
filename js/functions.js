@@ -2,7 +2,7 @@ var $spj = jQuery.noConflict();
 
 $spj(function() {
 
-	var loadTarget = $spj('#js-sample');
+	var loadTarget = $spj('#js-cptItems');
 	var links = $spj('.m-filters__a');
 	var currentPageLink = $spj('a.s-is-appHome');
 	var currentPageUrl = currentPageLink.attr('href') + ' ' + currentPageLink.attr('data-role') + ' > * ';

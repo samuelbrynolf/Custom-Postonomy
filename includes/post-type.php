@@ -5,15 +5,15 @@
 			'singular_name'       => 'Portfolio',
 			'menu_name'           => 'Portfolio',
 			'parent_item_colon'   => 'Parent Item:',
-			'all_items'           => 'Alla objekt',
-			'view_item'           => 'Se objekt',
-			'add_new_item'        => 'L&auml;gg till nytt portfolio-objekt',
-			'add_new'             => 'L&auml;gg till',
-			'edit_item'           => 'Redigera objekt',
-			'update_item'         => 'Uppdatera objekt',
-			'search_items'        => 'S&ouml;k objekt',
-			'not_found'           => 'Inget funnet!',
-			'not_found_in_trash'  => 'Inget funnet i soporna!',
+			'all_items'           => 'All items',
+			'view_item'           => 'View item',
+			'add_new_item'        => 'Add new item to portfolio',
+			'add_new'             => 'Add',
+			'edit_item'           => 'Edit item',
+			'update_item'         => 'Update item',
+			'search_items'        => 'Search items',
+			'not_found'           => 'Nothing found',
+			'not_found_in_trash'  => 'Nothing found in thrash',
 		);
 		$args = array(
 			'label'               => 'portfolio',
@@ -40,10 +40,10 @@
 	}
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
 	
-	function post_type_tags_fix($request) {
+	function post_type_tags_fix($request) { // Tags for custom post type? Yes please!
 	  if ( isset($request['tag']) && !isset($request['post_type']) )
 	  $request['post_type'] = 'any';
 	  return $request;
 	} 
 	add_filter('request', 'post_type_tags_fix'); 
-} ?>
+}
