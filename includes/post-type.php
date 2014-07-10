@@ -1,6 +1,7 @@
 <?php if (!function_exists('init_portfolio_custom_pt')){
 	function init_portfolio_custom_pt() {
 		$labels = array(
+			//'name'                => $option_name != '' ? $option_name : 'Portfolio',
 			'name'                => 'Portfolio',
 			'singular_name'       => 'Portfolio',
 			'menu_name'           => 'Portfolio',
@@ -16,7 +17,7 @@
 			'not_found_in_trash'  => 'Nothing found in thrash',
 		);
 		$args = array(
-			'label'               => 'portfolio',
+			'label'               => 'Portfolio',
 			'description'         => 'portfolio Description',
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields',),

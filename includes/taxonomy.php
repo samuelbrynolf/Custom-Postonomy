@@ -1,9 +1,9 @@
 <?php if (!function_exists('init_portfolio_tax')){
 	function init_portfolio_tax() {
 		$labels = array(
-			'name'                       => 'Portfolio division',
+			'name'                       => 'Portfolio Divisions',
 			'singular_name'              => 'Division',
-			'menu_name'                  => 'Division',
+			'menu_name'                  => 'Divisions',
 			'all_items'                  => 'All divisions',
 			'parent_item'                => 'Parent',
 			'parent_item_colon'          => 'Parent division:',
