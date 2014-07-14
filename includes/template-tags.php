@@ -30,13 +30,14 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 	$taxName = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'division';
 	$optionsCpt = get_option('fCPT_plugin_cpt_options');
 	$cptName = $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio';
-	$orderBy = $optionsCpt['hierarchical'] != '' ? 'menu_order' : 'date';
+	$orderBy = isset($optionsCpt['hierarchical']) != '' ? 'menu_order' : 'date';
+	$order = isset($optionsCpt['hierarchical']) != '' ? 'ASC' : 'DESC';
 	
 	if(is_tax($taxName)){
 		global $query_string;
 		$args = array(
 			'orderby' => $orderBy,
-			'order' => 'ASC',
+			'order' => $order,
 			'posts_per_page' => '-1'
 		);
 		
@@ -57,7 +58,7 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 		$args = array(
 			'post_type' => $cptName,
 			'orderby' => $orderBy,
-			'order' => 'ASC',
+			'order' => $order,
 			'posts_per_page' => '-1'
 		);
 		echo '<ul id="js-cptItems" class="m-cptItems">';

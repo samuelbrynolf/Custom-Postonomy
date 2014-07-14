@@ -1,24 +1,24 @@
 <?php function fCPT_example_plugin_menu() {
 	add_plugins_page(
-		'fCPT Plugin',      // The title to be displayed in the browser window for this page.
-		'fCPT Plugin',     // The text to be displayed for this menu item
-		'manage_options',     // Which type of users can see this menu item
-		'fCPT_plugin_options',   // The unique ID - that is, the slug - for this menu item
-		'fCPT_plugin_menu'    // The name of the function to call when rendering this menu's page
+		'fCPT Plugin',   
+		'fCPT Plugin',    
+		'manage_options', 
+		'fCPT_plugin_options',  
+		'fCPT_plugin_menu' 
 	);
 }
-add_action( 'admin_menu', 'fCPT_example_plugin_menu' );
+add_action('admin_menu', 'fCPT_example_plugin_menu');
 
-function fCPT_plugin_menu( $active_tab = '' ) { ?>
+function fCPT_plugin_menu($active_tab = '') { ?>
 	<div class="wrap">
 		<div id="icon-plugins" class="icon32"></div>
-		<h2><?php _e( 'Configure fCPT-plugin', 'fCPT' ); ?></h2>
+		<h2><?php _e('Configure fCPT-plugin', 'fCPT'); ?></h2>
 		<?php settings_errors(); ?>
-		<?php if( isset( $_GET[ 'tab' ] ) ) {
+		<?php if(isset($_GET['tab'])) {
 		$active_tab = $_GET[ 'tab' ];
-	} else if( $active_tab == 'cpt_options' ) {
+	} else if($active_tab == 'cpt_options') {
 			$active_tab = 'tax_options';
-		} else if( $active_tab == 'filter_options' ) {
+		} else if($active_tab == 'filter_options') {
 			$active_tab = 'filter_options';
 		} else {
 		$active_tab = 'cpt_options';
@@ -29,15 +29,15 @@ function fCPT_plugin_menu( $active_tab = '' ) { ?>
 			<a href="?page=fCPT_plugin_options&tab=filter_options" class="nav-tab <?php echo $active_tab == 'filter_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Filters', 'fCPT' ); ?></a>
 		</h2>
 		<form method="post" action="options.php">
-		<?php if( $active_tab == 'tax_options' ) {
-			settings_fields( 'fCPT_plugin_tax_options' );
-			do_settings_sections( 'fCPT_plugin_tax_options' );
-		} elseif( $active_tab == 'cpt_options' ) {
-			settings_fields( 'fCPT_plugin_cpt_options' );
-			do_settings_sections( 'fCPT_plugin_cpt_options' );
+		<?php if($active_tab == 'tax_options') {
+			settings_fields('fCPT_plugin_tax_options');
+			do_settings_sections('fCPT_plugin_tax_options');
+		} elseif( $active_tab == 'cpt_options') {
+			settings_fields('fCPT_plugin_cpt_options');
+			do_settings_sections('fCPT_plugin_cpt_options');
 		} else {
-			settings_fields( 'fCPT_plugin_filter_options' );
-			do_settings_sections( 'fCPT_plugin_filter_options' );
+			settings_fields('fCPT_plugin_filter_options');
+			do_settings_sections('fCPT_plugin_filter_options');
 		} submit_button(); ?>
 		</form>
 	</div>
@@ -109,7 +109,7 @@ function fCPT_plugin_initialize_cpt_options() {
 	register_setting(
 		'fCPT_plugin_cpt_options',
 		'fCPT_plugin_cpt_options',
-		'sanitize_field'
+		'validate_sanitize_input'
 	);
 }
 add_action( 'admin_init', 'fCPT_plugin_initialize_cpt_options' );
@@ -133,7 +133,7 @@ function fCPT_plugin_initialize_tax_options() {
 		'fCPT_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Activate this setting to display the header.', 'fCPT' ),
+			__( '', 'fCPT' ),
 		)
 	);
 	add_settings_field(
@@ -143,13 +143,13 @@ function fCPT_plugin_initialize_tax_options() {
 		'fCPT_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Leave bla', 'fCPT' ),
+			__( '', 'fCPT' ),
 		)
 	);
 	register_setting(
 		'fCPT_plugin_tax_options',
 		'fCPT_plugin_tax_options',
-		'sanitize_field'
+		'validate_sanitize_input'
 	);
 }
 add_action( 'admin_init', 'fCPT_plugin_initialize_tax_options' );
@@ -285,10 +285,15 @@ function fCPT_historyJSDisable_callback($args) {
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
-// SANITIZE CALLBACKS
+// VALIDATE & SANITIZE REGISTERS
 // ==================================================================================================================================================
 
-function sanitize_field($string){
-   $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
-   return $slug;
+function validate_sanitize_input($input) {
+  $output = array();
+  foreach( $input as $key => $value ) {
+     if( isset( $input[$key] ) ) {
+     	$output[$key] = preg_replace('/[^A-Za-z0-9-]+/', '-', $input[ $key ] );   
+  	}   
+  }
+  return apply_filters( 'sandbox_theme_validate_input_examples', $output, $input );
 } ?>

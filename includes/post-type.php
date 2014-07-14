@@ -14,6 +14,7 @@
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields',),
 			'taxonomies'          => $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions',
 			'hierarchical'        => isset($optionsCpt['hierarchical']) && intval($optionsCpt['hierarchical']),
+			//'hierarchical'        => $orderBy = $optionsCpt['hierarchical'] != '' ? 'true' : 'false',
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
