@@ -58,7 +58,7 @@ function fCPT_plugin_default_tax_options() {
 	$defaults = array(
 		'tax_name'  => 'division',
 		'slug_name'  => 'portfolio-divisions',
-		'hierarchical' => '0',
+		'hierarchical' => 0,
 	);
 	return apply_filters( 'fCPT_plugin_default_tax_options', $defaults );
 }
@@ -67,9 +67,9 @@ function fCPT_plugin_default_tax_options() {
 
 function fCPT_plugin_default_filter_options() {
 	$defaults = array(
-		'filters_enable' => '0',
-		'cpt_template_only' => '0',
-		'historyJS_disable' => '0',
+		'filters_enable' => 0,
+		'cpt_template_only' => 0,
+		'historyJS_disable' => 0,
 	);
 	return apply_filters( 'fCPT_plugin_default_filter_options', $defaults );
 }
