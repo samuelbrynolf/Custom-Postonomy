@@ -1,28 +1,19 @@
 <?php if (!function_exists('init_portfolio_custom_pt')){
 	function init_portfolio_custom_pt() {
+	$optionsCpt = get_option('fCPT_plugin_cpt_options');
+	$optionsTax = get_option('fCPT_plugin_tax_options');
 		$labels = array(
-			//'name'                => $option_name != '' ? $option_name : 'Portfolio',
-			'name'                => 'Portfolio',
-			'singular_name'       => 'Portfolio',
-			'menu_name'           => 'Portfolio',
-			'parent_item_colon'   => 'Parent Item:',
-			'all_items'           => 'All items',
-			'view_item'           => 'View item',
-			'add_new_item'        => 'Add new item to portfolio',
-			'add_new'             => 'New item',
-			'edit_item'           => 'Edit item',
-			'update_item'         => 'Update item',
-			'search_items'        => 'Search items',
-			'not_found'           => 'Nothing found',
-			'not_found_in_trash'  => 'Nothing found in thrash',
+			'name'                => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
+			'singular_name'       => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
+			'menu_name'           => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
+			'add_new_item'        => 'Add new item to '.($optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio'),
 		);
 		$args = array(
-			'label'               => 'Portfolio',
-			'description'         => 'portfolio Description',
+			'label'               => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields',),
-			'taxonomies'          => array( 'objekttyp' ),
-			'hierarchical'        => true,
+			'taxonomies'          => $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions',
+			'hierarchical'        => isset($optionsCpt['hierarchical']) && intval($optionsCpt['hierarchical']),
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
@@ -37,11 +28,11 @@
 			'capability_type'     => 'page',
 			'taxonomies' => array('post_tag')
 		);
-		register_post_type( 'portfolio', $args );
+		register_post_type( $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio', $args );
 	}
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
 	
-	function post_type_tags_fix($request) { // Tags for custom post type? Yes please!
+	function post_type_tags_fix($request) {
 	  if ( isset($request['tag']) && !isset($request['post_type']) )
 	  $request['post_type'] = 'any';
 	  return $request;

@@ -1,6 +1,9 @@
 <?php function filters_fCPT(){
-	$terms = get_terms('division');
-	if(is_tax('division')){
+	$optionsTax = get_option('fCPT_plugin_tax_options');
+	$taxName = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'division';
+	$terms = get_terms($taxName);
+	
+	if(is_tax($taxName)){
 		echo '<ul class="m-filters terms"><li class="m-filters__li"><a href="'.get_bloginfo('url').'/portfolio" >Alla</a></li>';
 	} else {
 		global $wp;
@@ -8,12 +11,12 @@
 		echo '<ul class="m-filters terms"><li class="m-filters__li"><a class="m-filters__a s-is-appHome s-is-current" href="'.$current_url.'" data-role="#js-cptItems">Alla</a></li>';
 	}
 	foreach ($terms as $term){
-		$term = sanitize_term($term, 'division');
-		$term_link = get_term_link($term, 'division');
+		$term = sanitize_term($term, $taxName);
+		$term_link = get_term_link($term, $taxName);
 		if (is_wp_error($term_link)) {
 			continue;
 		}
-		if(is_tax('division')){
+		if(is_tax($taxName)){
 			echo '<li class="m-filters__li"><a href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-cptItems">' . $term->name . '</a></li>';
 		} else {
 			echo '<li class="m-filters__li"><a class="m-filters__a term" href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-cptItems">' . $term->name . '</a></li>';
@@ -23,10 +26,16 @@
 }
 
 function loop_all_fCPT($templatePart = 'fCPT-item'){
-	if(is_tax('division')){
+	$optionsTax = get_option('fCPT_plugin_tax_options');
+	$taxName = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'division';
+	$optionsCpt = get_option('fCPT_plugin_cpt_options');
+	$cptName = $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio';
+	$orderBy = $optionsCpt['hierarchical'] != '' ? 'menu_order' : 'date';
+	
+	if(is_tax($taxName)){
 		global $query_string;
 		$args = array(
-			'orderby' => 'menu_order',
+			'orderby' => $orderBy,
 			'order' => 'ASC',
 			'posts_per_page' => '-1'
 		);
@@ -46,8 +55,8 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 		echo '</ul>';
 	} else {
 		$args = array(
-			'post_type' => 'portfolio',
-			'orderby' => 'menu_order',
+			'post_type' => $cptName,
+			'orderby' => $orderBy,
 			'order' => 'ASC',
 			'posts_per_page' => '-1'
 		);

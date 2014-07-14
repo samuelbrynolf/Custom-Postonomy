@@ -33,16 +33,50 @@ class filterCPT {
 	}
 	
 	public function scripts() {
-
+		$optionsFilter = get_option('fCPT_plugin_filter_options'); 
+		
 		function fCPT_scripts(){
-	    wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script( 'functionsMin', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			
+			$optionsFilter = get_option('fCPT_plugin_filter_options');
+			$optionsCpt = get_option('fCPT_plugin_cpt_options');
+			$cptName = $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio';
 	    
-	    //if (is_post_type_archive('portfolio')) { <-- option!
-		    wp_enqueue_script('jquery' );
-	    	wp_enqueue_script('bundled'); // Bundled version = compressed historyJS + functions. Already using history.js? Enqueue only functionsMin
-	   	//}
+	    if(isset($optionsFilter['cpt_template_only']) && intval($optionsFilter['cpt_template_only'])) {
+	    	if(is_post_type_archive($cptName)) {
+	    		echo 'Kör ut jQuery<br/>';
+	    		wp_enqueue_script('jquery');
+	    		if(isset($optionsFilter['historyJS_disable']) && intval($optionsFilter['historyJS_disable'])) {
+	    			wp_enqueue_script('functionsMin');
+	    			echo 'filters enabled<br/>';
+	   				echo 'är archive-prots.php msut have<br/>';
+	   				echo 'disable history.js kör bara ut functions.min.js';
+	    		} else {
+	    			wp_enqueue_script('bundled');
+	    			echo 'filters enabled<br/>';
+	   				echo 'är archive-prots.php msut have<br/>';
+	   				echo 'history.js aktivt — kör ut bundled.js<br/>';
+	    		}
+	    	} 
+    	} else {
+    		wp_enqueue_script('jquery');
+    		echo 'kör jquery<br/>';
+   			echo 'filters enabled<br/>';
+    		echo 'är inte archive-prots.php must have<br/>';
+    		if(isset($optionsFilter['historyJS_disable']) && intval($optionsFilter['historyJS_disable'])) {
+    			wp_enqueue_script('functionsMin');
+    			echo 'history.js disabled — kör functions.min.js istället<br/>';
+    		} else {
+    			wp_enqueue_script('bundled');
+    			echo 'history.js aktivt — kör bundled.js<br/>';
+    		} 
+   		}
 		}
-		add_action('wp_enqueue_scripts', 'fCPT_scripts');
+		
+		if(isset($optionsFilter['filters_enable']) && intval($optionsFilter['filters_enable'])) {
+			add_action('wp_enqueue_scripts', 'fCPT_scripts');
+		}
 	}
 }
 
