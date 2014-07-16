@@ -12,7 +12,7 @@
 			'label'               => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields'),
-			'taxonomies'          => array($optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions'),
+			//'taxonomies'          => array($optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions'),
 			'hierarchical'        => isset($optionsCpt['hierarchical']) && intval($optionsCpt['hierarchical']),
 			//'hierarchical'        => $orderBy = $optionsCpt['hierarchical'] != '' ? 'true' : 'false',
 			'public'              => true,
@@ -33,7 +33,7 @@
 	}
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
 	
-	function post_type_tags_fix($request) {
+	function post_type_tags_fix($request) { // inlcude on tag page
 	  if ( isset($request['tag']) && !isset($request['post_type']) )
 	  $request['post_type'] = 'any';
 	  return $request;
