@@ -28,11 +28,11 @@
 		register_post_type(get_cpt_options_value('cpt_name', 'sanitize_key'), $args );
 	}
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
-	
-	function post_type_tags_fix($request) { // inlcude CPT on tag.php
-	  if ( isset($request['tag']) && !isset($request['post_type']) )
-	  $request['post_type'] = 'any';
-	  return $request;
-	} 
-	add_filter('request', 'post_type_tags_fix'); 
+
+	function post_type_tags_fix($request) { // inlcude CPT's for tag-template-loop
+		if ( isset($request['tag']) && !isset($request['post_type']) )
+			$request['post_type'] = 'any';
+		return $request;
+	}
+	add_filter('request', 'post_type_tags_fix');
 }

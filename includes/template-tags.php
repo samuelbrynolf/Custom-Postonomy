@@ -1,7 +1,7 @@
 <?php function filters_fCPT(){
 	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
 	$terms = get_terms($taxName);
-	
+
 	if(is_tax($taxName)){
 		echo '<ul class="m-filters terms"><li class="m-filters__li"><a href="'.get_bloginfo('url').'/portfolio" >Alla</a></li>';
 	} else {
@@ -28,7 +28,7 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
 	$orderby = get_cpt_options_value('hierarchical') != '' ? 'menu_order' : 'date';
 	$order = get_cpt_options_value('hierarchical') != '' ? 'ASC' : 'DESC';
-	
+
 	if(is_tax($taxName)){
 		global $query_string;
 		$customargs = array(
@@ -37,20 +37,21 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 			'posts_per_page' => '-1'
 		);
 		$args = wp_parse_args($query_string, $customargs);
-		
+
 		echo '<ul id="js-cptItems" class="m-cptItems">';
-			query_posts($args);
-			if (have_posts()) {
-				while (have_posts()) { the_post();
-					echo '<li>';
-						get_template_part($templatePart);
-					echo '</li>';
-				}
-			} else {
-				echo 'No items added yet.';
+		query_posts($args);
+		if (have_posts()) {
+			while (have_posts()) { the_post();
+				echo '<li>';
+				get_template_part($templatePart);
+				echo '</li>';
 			}
-			wp_reset_query();
+		} else {
+			echo 'No items added yet.';
+		}
+		wp_reset_query();
 		echo '</ul>';
+
 	} else {
 		$args = array(
 			'post_type' => get_cpt_options_value('cpt_name', 'sanitize_key'),
@@ -59,18 +60,18 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 			'posts_per_page' => '-1'
 		);
 		echo '<ul id="js-cptItems" class="m-cptItems">';
-			$cptItems = new WP_Query($args);
-			if($cptItems->have_posts()){
-				while($cptItems->have_posts()){
-					$cptItems->the_post();
-					echo '<li>';
-						get_template_part($templatePart);
-					echo '</li>';
-				}
-			} else {
-				echo 'No items added yet.';
+		$cptItems = new WP_Query($args);
+		if($cptItems->have_posts()){
+			while($cptItems->have_posts()){
+				$cptItems->the_post();
+				echo '<li>';
+				get_template_part($templatePart);
+				echo '</li>';
 			}
-			wp_reset_postdata();
+		} else {
+			echo 'No items added yet.';
+		}
+		wp_reset_postdata();
 		echo '</ul>';
 	}
 }

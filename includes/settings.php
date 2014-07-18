@@ -1,10 +1,10 @@
 <?php function fCPT_example_plugin_menu() {
 	add_plugins_page(
-		'fCPT Plugin',   
-		'fCPT Plugin',    
-		'manage_options', 
-		'fCPT_plugin_options',  
-		'fCPT_plugin_menu' 
+		'fCPT Plugin',
+		'fCPT Plugin',
+		'manage_options',
+		'fCPT_plugin_options',
+		'fCPT_plugin_menu'
 	);
 }
 add_action('admin_menu', 'fCPT_example_plugin_menu');
@@ -30,15 +30,15 @@ function fCPT_plugin_menu($active_tab = '') { ?>
 		</h2>
 		<form method="post" action="options.php">
 		<?php if($active_tab == 'tax_options') {
-			settings_fields('fCPT_plugin_tax_options');
-			do_settings_sections('fCPT_plugin_tax_options');
-		} elseif( $active_tab == 'cpt_options') {
-			settings_fields('fCPT_plugin_cpt_options');
-			do_settings_sections('fCPT_plugin_cpt_options');
-		} else {
-			settings_fields('fCPT_plugin_filter_options');
-			do_settings_sections('fCPT_plugin_filter_options');
-		} submit_button(); ?>
+		settings_fields('fCPT_plugin_tax_options');
+		do_settings_sections('fCPT_plugin_tax_options');
+	} elseif( $active_tab == 'cpt_options') {
+		settings_fields('fCPT_plugin_cpt_options');
+		do_settings_sections('fCPT_plugin_cpt_options');
+	} else {
+		settings_fields('fCPT_plugin_filter_options');
+		do_settings_sections('fCPT_plugin_filter_options');
+	} submit_button(); ?>
 		</form>
 	</div>
 <?php }
@@ -84,10 +84,10 @@ function fCPT_plugin_initialize_cpt_options() {
 		add_option( 'fCPT_plugin_cpt_options', apply_filters( 'fCPT_plugin_default_cpt_options', fCPT_plugin_default_cpt_options() ) );
 	}
 	add_settings_section(
-		'cpt_settings_section',   
-		__( 'Create custom post type', 'fCPT' ),  
+		'cpt_settings_section',
+		__( 'Create custom post type', 'fCPT' ),
 		'fCPT_cpt_options_callback',
-		'fCPT_plugin_cpt_options'  
+		'fCPT_plugin_cpt_options'
 	);
 	add_settings_field(
 		'cpt_name',
@@ -119,7 +119,7 @@ add_action( 'admin_init', 'fCPT_plugin_initialize_cpt_options' );
 function fCPT_plugin_initialize_tax_options() {
 	if( false == get_option( 'fCPT_plugin_tax_options' ) ) {
 		add_option( 'fCPT_plugin_tax_options', apply_filters( 'fCPT_plugin_default_tax_options', fCPT_plugin_default_tax_options() ) );
-	} 
+	}
 	add_settings_section(
 		'tax_settings_section',   // ID used to identify this section and with which to register options
 		__( 'Create custom taxonomy', 'fCPT' ),  // Title to be displayed on the administration page
@@ -200,7 +200,7 @@ function fCPT_plugin_initialize_filter_options() {
 		'fCPT_plugin_filter_options',
 		'fCPT_plugin_filter_options'
 	);
-} 
+}
 add_action( 'admin_init', 'fCPT_plugin_initialize_filter_options' );
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ function fCPT_filter_options_callback() {
 function fCPT_cptname_callback() {
 	$options = get_option( 'fCPT_plugin_cpt_options' );
 	$cptName = '';
-	if( isset( $options['cpt_name'] ) ) {
+	if(isset($options['cpt_name'])) {
 		$cptName = $options['cpt_name'];
 	}
 	echo '<input type="text" id="cpt_name" name="fCPT_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
@@ -246,7 +246,7 @@ function fCPT_cptHierarchical_callback($args) {
 function fCPT_taxname_callback() {
 	$options = get_option( 'fCPT_plugin_tax_options' );
 	$taxName = '';
-	if( isset( $options['tax_name'] ) ) {
+	if(isset($options['tax_name'])) {
 		$taxName = $options['tax_name'];
 	}
 	echo '<input type="text" id="tax_name" name="fCPT_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
@@ -255,7 +255,7 @@ function fCPT_taxname_callback() {
 function fCPT_slugname_callback() {
 	$options = get_option( 'fCPT_plugin_tax_options' );
 	$taxSlug = '';
-	if( isset( $options['slug_name'] ) ) {
+	if(isset($options['slug_name'])) {
 		$taxSlug = $options['slug_name'];
 	}
 	echo '<input type="text" id="slug_name" name="fCPT_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
@@ -289,14 +289,14 @@ function fCPT_historyJSDisable_callback($args) {
 // ==================================================================================================================================================
 
 function validate_sanitize_input($input) {
-  $output = array();
-  foreach( $input as $key => $value ) {
-     if( isset( $input[$key] ) ) {
-     	$output[$key] = preg_replace('/[^A-Za-z0-9-]+/', '-', $input[ $key ] );   
-  	}   
-  }
-  return apply_filters('validate_sanitize_input', $output, $input);
-} 
+	$output = array();
+	foreach($input as $key => $value){
+		if(isset($input[$key])){
+			$output[$key] = preg_replace('/[^A-Za-z0-9-]+/', '-', $input[ $key ] );
+		}
+	}
+	return apply_filters('validate_sanitize_input', $output, $input);
+}
 
 function get_cpt_options_value($fieldID, $sanitize_key=''){
 	$optionsCpt = get_option('fCPT_plugin_cpt_options');
