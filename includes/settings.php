@@ -56,8 +56,8 @@ function fCPT_plugin_default_cpt_options() {
 
 function fCPT_plugin_default_tax_options() {
 	$defaults = array(
-		'tax_name'  => 'division',
-		'slug_name'  => 'portfolio-divisions',
+		'tax_name'  => 'sections',
+		'slug_name'  => 'portfolio-sections',
 		'hierarchical' => 0,
 	);
 	return apply_filters( 'fCPT_plugin_default_tax_options', $defaults );
@@ -313,11 +313,11 @@ function get_cpt_options_value($fieldID, $sanitize_key=''){
 function get_tax_options_value($fieldID, $sanitize_key=''){
 	$optionsTax = get_option('fCPT_plugin_tax_options');
 	if($fieldID === 'tax_name' && $sanitize_key === ''){
-		$value = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions';
+		$value = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Sections';
 	} elseif($fieldID === 'tax_name' && $sanitize_key === 'sanitize_key'){
-		$value = $optionsTax[$fieldID] != '' ? sanitize_key($optionsTax[$fieldID]) : 'divisions';
+		$value = $optionsTax[$fieldID] != '' ? sanitize_key($optionsTax[$fieldID]) : 'sections';
 	} elseif ($fieldID === 'slug_name'){
-		$value = $optionsTax['slug_name'] != '' ? sanitize_key($optionsTax['slug_name']) : 'portfolio-divisions';
+		$value = $optionsTax['slug_name'] != '' ? sanitize_key($optionsTax['slug_name']) : 'portfolio-sections';
 	}
 	return $value;
 }
