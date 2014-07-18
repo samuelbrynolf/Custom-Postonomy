@@ -13,7 +13,6 @@ if (basename($_SERVER['PHP_SELF']) == basename (__FILE__)){
 }
 
 class filterCPT {
-
 	public function __construct(){
 		add_action('plugins_loaded', array(&$this, 'constants'), 1);
 		add_action('plugins_loaded', array(&$this, 'includes'), 2);
@@ -30,28 +29,17 @@ class filterCPT {
 		require_once(fCPT_INCLUDES . 'post-type.php');
 		require_once(fCPT_INCLUDES . 'taxonomy.php');
 		require_once(fCPT_INCLUDES . 'template-tags.php');
-		require_once(fCPT_INCLUDES . 'script_conditionals.php');
+		require_once(fCPT_INCLUDES . 'enqueue_conditionals.php');
 	}
 	
 	public function scripts() {
-		$optionsFilter = get_option('fCPT_plugin_filter_options'); 
-		$optionsCpt = get_option('fCPT_plugin_cpt_options');
-		$cptName = $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio';
-		
 		function fCPT_scripts(){
-			wp_register_script( 'bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			wp_register_script( 'functionsMin', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-
-	    if(isset($optionsFilter['cpt_template_only']) == '1') {
-	    	if(is_post_type_archive($cptName)) {
-	    		scriptConditionals();
-	    	} 
-    	} else {
-    		scriptConditionals();
-   		}
+			wp_register_script('bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script('functionsMin', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
+	    enqueue_conditionals();
 		}
 		
-		if(isset($optionsFilter['filters_enable']) == '1') {
+		if(get_filter_options_value('filters_enable') == '1') {
 			add_action('wp_enqueue_scripts', 'fCPT_scripts');
 		}
 	}

@@ -1,6 +1,5 @@
 <?php function filters_fCPT(){
-	$optionsTax = get_option('fCPT_plugin_tax_options');
-	$taxName = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'division';
+	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
 	$terms = get_terms($taxName);
 	
 	if(is_tax($taxName)){
@@ -26,54 +25,52 @@
 }
 
 function loop_all_fCPT($templatePart = 'fCPT-item'){
-	$optionsTax = get_option('fCPT_plugin_tax_options');
-	$taxName = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'division';
-	$optionsCpt = get_option('fCPT_plugin_cpt_options');
-	$cptName = $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio';
-	$orderBy = isset($optionsCpt['hierarchical']) != '' ? 'menu_order' : 'date';
-	$order = isset($optionsCpt['hierarchical']) != '' ? 'ASC' : 'DESC';
+	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
+	$orderby = get_cpt_options_value('hierarchical') != '' ? 'menu_order' : 'date';
+	$order = get_cpt_options_value('hierarchical') != '' ? 'ASC' : 'DESC';
 	
 	if(is_tax($taxName)){
 		global $query_string;
-		$args = array(
-			'orderby' => $orderBy,
+		$customargs = array(
+			'orderby' => $orderby,
 			'order' => $order,
 			'posts_per_page' => '-1'
 		);
+		$args = wp_parse_args($query_string, $customargs);
 		
 		echo '<ul id="js-cptItems" class="m-cptItems">';
-		query_posts($query_string, $args);
-		if (have_posts()) {
-			while (have_posts()) { the_post();
-				echo '<li>';
-				get_template_part($templatePart);
-				echo '</li>';
+			query_posts($args);
+			if (have_posts()) {
+				while (have_posts()) { the_post();
+					echo '<li>';
+						get_template_part($templatePart);
+					echo '</li>';
+				}
+			} else {
+				echo 'No items added yet.';
 			}
-		} else {
-			echo 'No items added yet.';
-		}
-		wp_reset_query();
+			wp_reset_query();
 		echo '</ul>';
 	} else {
 		$args = array(
-			'post_type' => $cptName,
-			'orderby' => $orderBy,
+			'post_type' => get_cpt_options_value('cpt_name', 'sanitize_key'),
+			'orderby' => $orderby,
 			'order' => $order,
 			'posts_per_page' => '-1'
 		);
 		echo '<ul id="js-cptItems" class="m-cptItems">';
-		$cptItems = new WP_Query($args);
-		if($cptItems->have_posts()){
-			while($cptItems->have_posts()){
-				$cptItems->the_post();
-				echo '<li>';
-				get_template_part($templatePart);
-				echo '</li>';
+			$cptItems = new WP_Query($args);
+			if($cptItems->have_posts()){
+				while($cptItems->have_posts()){
+					$cptItems->the_post();
+					echo '<li>';
+						get_template_part($templatePart);
+					echo '</li>';
+				}
+			} else {
+				echo 'No items added yet.';
 			}
-		} else {
-			echo 'No items added yet.';
-		}
-		wp_reset_postdata();
+			wp_reset_postdata();
 		echo '</ul>';
 	}
 }

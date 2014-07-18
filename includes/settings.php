@@ -285,7 +285,7 @@ function fCPT_historyJSDisable_callback($args) {
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
-// VALIDATE & SANITIZE REGISTERS
+// VALIDATE- & SANITIZE- + GET VALUE- FUNCTIONS
 // ==================================================================================================================================================
 
 function validate_sanitize_input($input) {
@@ -295,5 +295,35 @@ function validate_sanitize_input($input) {
      	$output[$key] = preg_replace('/[^A-Za-z0-9-]+/', '-', $input[ $key ] );   
   	}   
   }
-  return apply_filters( 'sandbox_theme_validate_input_examples', $output, $input );
-} ?>
+  return apply_filters('validate_sanitize_input', $output, $input);
+} 
+
+function get_cpt_options_value($fieldID, $sanitize_key=''){
+	$optionsCpt = get_option('fCPT_plugin_cpt_options');
+	if($fieldID === 'cpt_name' && $sanitize_key === ''){
+		$value = $optionsCpt[$fieldID] != '' ? $optionsCpt[$fieldID] : 'Portfolio';
+	} elseif($fieldID === 'cpt_name' && $sanitize_key === 'sanitize_key') {
+		$value = $optionsCpt[$fieldID] != '' ? sanitize_key($optionsCpt[$fieldID]) : 'portfolio';
+	} else {
+		$value = isset($optionsCpt['hierarchical']) && intval($optionsCpt['hierarchical']);
+	}
+	return $value;
+}
+
+function get_tax_options_value($fieldID, $sanitize_key=''){
+	$optionsTax = get_option('fCPT_plugin_tax_options');
+	if($fieldID === 'tax_name' && $sanitize_key === ''){
+		$value = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions';
+	} elseif($fieldID === 'tax_name' && $sanitize_key === 'sanitize_key'){
+		$value = $optionsTax[$fieldID] != '' ? sanitize_key($optionsTax[$fieldID]) : 'divisions';
+	} elseif ($fieldID === 'slug_name'){
+		$value = $optionsTax['slug_name'] != '' ? sanitize_key($optionsTax['slug_name']) : 'portfolio-divisions';
+	}
+	return $value;
+}
+
+function get_filter_options_value($fieldID){
+	$optionsFilter = get_option('fCPT_plugin_filter_options');
+	$value = isset($optionsFilter[$fieldID]) && intval($optionsFilter[$fieldID]);
+	return $value;
+}

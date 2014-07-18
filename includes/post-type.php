@@ -1,20 +1,16 @@
 <?php if (!function_exists('init_portfolio_custom_pt')){
 	function init_portfolio_custom_pt() {
-	$optionsCpt = get_option('fCPT_plugin_cpt_options');
-	$optionsTax = get_option('fCPT_plugin_tax_options');
 		$labels = array(
-			'name'                => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
-			'singular_name'       => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
-			'menu_name'           => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
-			'add_new_item'        => 'Add new item to '.($optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio'),
+			'name'                => get_cpt_options_value('cpt_name'),
+			'singular_name'       => get_cpt_options_value('cpt_name'),
+			'menu_name'           => get_cpt_options_value('cpt_name'),
+			'add_new_item'        => 'Add new item to '.get_cpt_options_value('cpt_name'),
 		);
 		$args = array(
-			'label'               => $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'Portfolio',
+			'label'               => get_cpt_options_value('cpt_name'),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields'),
-			//'taxonomies'          => array($optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Divisions'),
-			'hierarchical'        => isset($optionsCpt['hierarchical']) && intval($optionsCpt['hierarchical']),
-			//'hierarchical'        => $orderBy = $optionsCpt['hierarchical'] != '' ? 'true' : 'false',
+			'hierarchical'        => get_cpt_options_value('hierarchical'),
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
@@ -29,11 +25,11 @@
 			'capability_type'     => 'page',
 			'taxonomies' => array('post_tag')
 		);
-		register_post_type( $optionsCpt['cpt_name'] != '' ? $optionsCpt['cpt_name'] : 'portfolio', $args );
+		register_post_type(get_cpt_options_value('cpt_name', 'sanitize_key'), $args );
 	}
 	add_action( 'init', 'init_portfolio_custom_pt', 0 );
 	
-	function post_type_tags_fix($request) { // inlcude on tag page
+	function post_type_tags_fix($request) { // inlcude CPT on tag.php
 	  if ( isset($request['tag']) && !isset($request['post_type']) )
 	  $request['post_type'] = 'any';
 	  return $request;
