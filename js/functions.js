@@ -3,7 +3,7 @@ var $fCPT = jQuery.noConflict();
 $fCPT(function() {
 
 	var loadTarget = $fCPT('#js-cptItems');
-	var links = $fCPT('.m-filters__a');
+	var links = $fCPT('#js-filters .filter');
 	var currentPageLink = $fCPT('a.s-is-appHome');
 	var currentPageUrl = currentPageLink.attr('href') + ' ' + currentPageLink.attr('data-role') + ' > * ';
 
@@ -11,9 +11,7 @@ $fCPT(function() {
 		var url = state.url;
 		var caller = $fCPT('[data-id=' + state.caller + ']');
 		if ($fCPT('#loadMessage').length === 0) {
-			$fCPT('<p id="loadMessage">Laddar...</p>').insertBefore(loadTarget);
-			//$fCPT('<p id="loadMessage">Laddar...</p>').insertBefore(loadTarget);
-			//loadTarget.append('<p id="loadMessage">Laddar...</p>');
+			$fCPT('<p id="loadMessage">Loading...</p>').insertBefore(loadTarget);
 		}
 		
 		var loadmsg = $fCPT('#loadMessage');

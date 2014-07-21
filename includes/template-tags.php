@@ -1,13 +1,13 @@
-<?php function filters_fCPT(){
+<?php function terms_cPostonomy(){
 	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
 	$terms = get_terms($taxName);
 
 	if(is_tax($taxName)){
-		echo '<ul class="m-filters terms"><li class="m-filters__li"><a href="'.get_bloginfo('url').'/portfolio" >Alla</a></li>';
+		echo '<ul class="m-terms"><li class="m-terms__li"><a class="m-terms__a" href="'.get_bloginfo('url').'/portfolio" >Alla</a></li>';
 	} else {
 		global $wp;
 		$current_url = home_url($wp->request);
-		echo '<ul class="m-filters terms"><li class="m-filters__li"><a class="m-filters__a s-is-appHome s-is-current" href="'.$current_url.'" data-role="#js-cptItems">Alla</a></li>';
+		echo '<ul id="js-filters" class="m-terms"><li class="m-terms__li"><a class="m-terms__a filter s-is-appHome s-is-current" href="'.$current_url.'" data-role="#js-cptItems">Alla</a></li>';
 	}
 	foreach ($terms as $term){
 		$term = sanitize_term($term, $taxName);
@@ -16,15 +16,15 @@
 			continue;
 		}
 		if(is_tax($taxName)){
-			echo '<li class="m-filters__li"><a href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-cptItems">' . $term->name . '</a></li>';
+			echo '<li class="m-terms__li"><a class="m-terms__a" href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '">' . $term->name . '</a></li>';
 		} else {
-			echo '<li class="m-filters__li"><a class="m-filters__a term" href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-cptItems">' . $term->name . '</a></li>';
+			echo '<li class="m-terms__li"><a class="m-terms__a filter" href="' . esc_url( $term_link ) . '" title="' . sprintf(__('Se alla objekt: %s', 'my_localization_domain'), $term->name) . '" data-role="#js-cptItems">' . $term->name . '</a></li>';
 		}
 	}
 	echo '</ul>';
 }
 
-function loop_all_fCPT($templatePart = 'fCPT-item'){
+function loop_part_cPostonomy($templatePart = 'cPostonomy-part'){
 	$taxName = get_tax_options_value('tax_name', 'sanitize_key');
 	$orderby = get_cpt_options_value('hierarchical') != '' ? 'menu_order' : 'date';
 	$order = get_cpt_options_value('hierarchical') != '' ? 'ASC' : 'DESC';
@@ -42,7 +42,7 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 		query_posts($args);
 		if (have_posts()) {
 			while (have_posts()) { the_post();
-				echo '<li>';
+				echo '<li class="m-cptItems__li">';
 				get_template_part($templatePart);
 				echo '</li>';
 			}
@@ -64,7 +64,7 @@ function loop_all_fCPT($templatePart = 'fCPT-item'){
 		if($cptItems->have_posts()){
 			while($cptItems->have_posts()){
 				$cptItems->the_post();
-				echo '<li>';
+				echo '<li class="m-cptItems__li">';
 				get_template_part($templatePart);
 				echo '</li>';
 			}

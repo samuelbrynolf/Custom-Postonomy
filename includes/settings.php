@@ -1,18 +1,18 @@
-<?php function fCPT_example_plugin_menu() {
+<?php function cPostonomy_example_plugin_menu() {
 	add_plugins_page(
-		'fCPT Plugin',
-		'fCPT Plugin',
+		'cPostonomy Plugin',
+		'cPostonomy Plugin',
 		'manage_options',
-		'fCPT_plugin_options',
-		'fCPT_plugin_menu'
+		'cPostonomy_plugin_options',
+		'cPostonomy_plugin_menu'
 	);
 }
-add_action('admin_menu', 'fCPT_example_plugin_menu');
+add_action('admin_menu', 'cPostonomy_example_plugin_menu');
 
-function fCPT_plugin_menu($active_tab = '') { ?>
+function cPostonomy_plugin_menu($active_tab = '') { ?>
 	<div class="wrap">
 		<div id="icon-plugins" class="icon32"></div>
-		<h2><?php _e('Configure fCPT-plugin', 'fCPT'); ?></h2>
+		<h2><?php _e('Configure cPostonomy-plugin', 'cPostonomy'); ?></h2>
 		<?php settings_errors(); ?>
 		<?php if(isset($_GET['tab'])) {
 		$active_tab = $_GET[ 'tab' ];
@@ -24,20 +24,20 @@ function fCPT_plugin_menu($active_tab = '') { ?>
 		$active_tab = 'cpt_options';
 	} ?>
 		<h2 class="nav-tab-wrapper">
-			<a href="?page=fCPT_plugin_options&tab=cpt_options" class="nav-tab <?php echo $active_tab == 'cpt_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Post Type', 'fCPT' ); ?></a>
-			<a href="?page=fCPT_plugin_options&tab=tax_options" class="nav-tab <?php echo $active_tab == 'tax_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Taxonomy', 'fCPT' ); ?></a>
-			<a href="?page=fCPT_plugin_options&tab=filter_options" class="nav-tab <?php echo $active_tab == 'filter_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Filters', 'fCPT' ); ?></a>
+			<a href="?page=cPostonomy_plugin_options&tab=cpt_options" class="nav-tab <?php echo $active_tab == 'cpt_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Post Type', 'cPostonomy' ); ?></a>
+			<a href="?page=cPostonomy_plugin_options&tab=tax_options" class="nav-tab <?php echo $active_tab == 'tax_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Taxonomy', 'cPostonomy' ); ?></a>
+			<a href="?page=cPostonomy_plugin_options&tab=filter_options" class="nav-tab <?php echo $active_tab == 'filter_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Filters', 'cPostonomy' ); ?></a>
 		</h2>
 		<form method="post" action="options.php">
 		<?php if($active_tab == 'tax_options') {
-		settings_fields('fCPT_plugin_tax_options');
-		do_settings_sections('fCPT_plugin_tax_options');
+		settings_fields('cPostonomy_plugin_tax_options');
+		do_settings_sections('cPostonomy_plugin_tax_options');
 	} elseif( $active_tab == 'cpt_options') {
-		settings_fields('fCPT_plugin_cpt_options');
-		do_settings_sections('fCPT_plugin_cpt_options');
+		settings_fields('cPostonomy_plugin_cpt_options');
+		do_settings_sections('cPostonomy_plugin_cpt_options');
 	} else {
-		settings_fields('fCPT_plugin_filter_options');
-		do_settings_sections('fCPT_plugin_filter_options');
+		settings_fields('cPostonomy_plugin_filter_options');
+		do_settings_sections('cPostonomy_plugin_filter_options');
 	} submit_button(); ?>
 		</form>
 	</div>
@@ -45,178 +45,178 @@ function fCPT_plugin_menu($active_tab = '') { ?>
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_default_cpt_options() {
+function cPostonomy_plugin_default_cpt_options() {
 	$defaults = array(
 		'cpt_name'  => 'portfolio',
 	);
-	return apply_filters( 'fCPT_plugin_default_cpt_options', $defaults );
+	return apply_filters( 'cPostonomy_plugin_default_cpt_options', $defaults );
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_default_tax_options() {
+function cPostonomy_plugin_default_tax_options() {
 	$defaults = array(
 		'tax_name'  => 'sections',
 		'slug_name'  => 'portfolio-sections',
 		'hierarchical' => 0,
 	);
-	return apply_filters( 'fCPT_plugin_default_tax_options', $defaults );
+	return apply_filters( 'cPostonomy_plugin_default_tax_options', $defaults );
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_default_filter_options() {
+function cPostonomy_plugin_default_filter_options() {
 	$defaults = array(
 		'filters_enable' => 0,
 		'cpt_template_only' => 0,
 		'historyJS_disable' => 0,
 	);
-	return apply_filters( 'fCPT_plugin_default_filter_options', $defaults );
+	return apply_filters( 'cPostonomy_plugin_default_filter_options', $defaults );
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
-// INIT fCPT OPTIONS
+// INIT cPostonomy OPTIONS
 // ==================================================================================================================================================
 // CPT ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_initialize_cpt_options() {
-	if( false == get_option( 'fCPT_plugin_cpt_options' ) ) {
-		add_option( 'fCPT_plugin_cpt_options', apply_filters( 'fCPT_plugin_default_cpt_options', fCPT_plugin_default_cpt_options() ) );
+function cPostonomy_plugin_initialize_cpt_options() {
+	if( false == get_option( 'cPostonomy_plugin_cpt_options' ) ) {
+		add_option( 'cPostonomy_plugin_cpt_options', apply_filters( 'cPostonomy_plugin_default_cpt_options', cPostonomy_plugin_default_cpt_options() ) );
 	}
 	add_settings_section(
 		'cpt_settings_section',
-		__( 'Create custom post type', 'fCPT' ),
-		'fCPT_cpt_options_callback',
-		'fCPT_plugin_cpt_options'
+		__( 'Create custom post type', 'cPostonomy' ),
+		'cPostonomy_cpt_options_callback',
+		'cPostonomy_plugin_cpt_options'
 	);
 	add_settings_field(
 		'cpt_name',
 		'Name',
-		'fCPT_cptname_callback',
-		'fCPT_plugin_cpt_options',
+		'cPostonomy_cptname_callback',
+		'cPostonomy_plugin_cpt_options',
 		'cpt_settings_section'
 	);
 	add_settings_field(
 		'hierarchical',      // ID used to identify the field throughout the plugin
-		__( 'Hierarchical', 'fCPT' ),       // The label to the left of the option interface element
-		'fCPT_cptHierarchical_callback', // The name of the function responsible for rendering the option interface
-		'fCPT_plugin_cpt_options', // The page on which this option will be displayed
+		__( 'Hierarchical', 'cPostonomy' ),       // The label to the left of the option interface element
+		'cPostonomy_cptHierarchical_callback', // The name of the function responsible for rendering the option interface
+		'cPostonomy_plugin_cpt_options', // The page on which this option will be displayed
 		'cpt_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Order posts by menu. (Default: Order by date)', 'fCPT' ),
+			__( 'Order posts by menu. (Default: Order by date)', 'cPostonomy' ),
 		)
 	);
 	register_setting(
-		'fCPT_plugin_cpt_options',
-		'fCPT_plugin_cpt_options',
+		'cPostonomy_plugin_cpt_options',
+		'cPostonomy_plugin_cpt_options',
 		'validate_sanitize_input'
 	);
 }
-add_action( 'admin_init', 'fCPT_plugin_initialize_cpt_options' );
+add_action( 'admin_init', 'cPostonomy_plugin_initialize_cpt_options' );
 
 // TAX ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_initialize_tax_options() {
-	if( false == get_option( 'fCPT_plugin_tax_options' ) ) {
-		add_option( 'fCPT_plugin_tax_options', apply_filters( 'fCPT_plugin_default_tax_options', fCPT_plugin_default_tax_options() ) );
+function cPostonomy_plugin_initialize_tax_options() {
+	if( false == get_option( 'cPostonomy_plugin_tax_options' ) ) {
+		add_option( 'cPostonomy_plugin_tax_options', apply_filters( 'cPostonomy_plugin_default_tax_options', cPostonomy_plugin_default_tax_options() ) );
 	}
 	add_settings_section(
 		'tax_settings_section',   // ID used to identify this section and with which to register options
-		__( 'Create custom taxonomy', 'fCPT' ),  // Title to be displayed on the administration page
-		'fCPT_tax_options_callback', // Callback used to render the description of the section
-		'fCPT_plugin_tax_options'  // Page on which to add this section of options
+		__( 'Create custom taxonomy', 'cPostonomy' ),  // Title to be displayed on the administration page
+		'cPostonomy_tax_options_callback', // Callback used to render the description of the section
+		'cPostonomy_plugin_tax_options'  // Page on which to add this section of options
 	);
 	add_settings_field(
 		'tax_name',      // ID used to identify the field throughout the plugin
-		__( 'Name', 'fCPT' ),       // The label to the left of the option interface element
-		'fCPT_taxname_callback', // The name of the function responsible for rendering the option interface
-		'fCPT_plugin_tax_options', // The page on which this option will be displayed
+		__( 'Name', 'cPostonomy' ),       // The label to the left of the option interface element
+		'cPostonomy_taxname_callback', // The name of the function responsible for rendering the option interface
+		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'fCPT' ),
+			__( '', 'cPostonomy' ),
 		)
 	);
 	add_settings_field(
 		'slug_name',      // ID used to identify the field throughout the plugin
-		__( 'Custom slug', 'fCPT' ),       // The label to the left of the option interface element
-		'fCPT_slugname_callback', // The name of the function responsible for rendering the option interface
-		'fCPT_plugin_tax_options', // The page on which this option will be displayed
+		__( 'Custom slug', 'cPostonomy' ),       // The label to the left of the option interface element
+		'cPostonomy_slugname_callback', // The name of the function responsible for rendering the option interface
+		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'fCPT' ),
+			__( '', 'cPostonomy' ),
 		)
 	);
 	register_setting(
-		'fCPT_plugin_tax_options',
-		'fCPT_plugin_tax_options',
+		'cPostonomy_plugin_tax_options',
+		'cPostonomy_plugin_tax_options',
 		'validate_sanitize_input'
 	);
 }
-add_action( 'admin_init', 'fCPT_plugin_initialize_tax_options' );
+add_action( 'admin_init', 'cPostonomy_plugin_initialize_tax_options' );
 
 // FILTERS ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_plugin_initialize_filter_options() {
-	if( false == get_option( 'fCPT_plugin_filter_options' ) ) {
-		add_option( 'fCPT_plugin_filter_options', apply_filters( 'fCPT_plugin_default_filter_options', fCPT_plugin_default_filter_options() ) );
+function cPostonomy_plugin_initialize_filter_options() {
+	if( false == get_option( 'cPostonomy_plugin_filter_options' ) ) {
+		add_option( 'cPostonomy_plugin_filter_options', apply_filters( 'cPostonomy_plugin_default_filter_options', cPostonomy_plugin_default_filter_options() ) );
 	}
 	add_settings_section(
 		'filter_settings_section',
-		__( 'Set up filters for a list of custom post types.', 'fCPT' ),
-		'fCPT_filter_options_callback',
-		'fCPT_plugin_filter_options'
+		__( 'Set up filters for a list of custom post types.', 'cPostonomy' ),
+		'cPostonomy_filter_options_callback',
+		'cPostonomy_plugin_filter_options'
 	);
 	add_settings_field(
 		'filters_enable',
-		__( 'Enable filters', 'fCPT' ),
-		'fCPT_filtersEnable_callback',
-		'fCPT_plugin_filter_options',
+		__( 'Enable filters', 'cPostonomy' ),
+		'cPostonomy_filtersEnable_callback',
+		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('', 'fCPT'),
+			__('', 'cPostonomy'),
 		)
 	);
 	add_settings_field(
 		'cpt_template_only',
-		__( 'Custom template only', 'fCPT' ),
-		'fCPT_cptTemplateOnly_callback',
-		'fCPT_plugin_filter_options',
+		__( 'Custom template only', 'cPostonomy' ),
+		'cPostonomy_cptTemplateOnly_callback',
+		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('Run filter-scripts on custom template only. <a href="http://codex.wordpress.org/Post_Type_Templates" title="Custom Post Type Templates">Reference.</a>', 'fCPT'),
+			__('Run filter-scripts on custom template only. <a href="http://codex.wordpress.org/Post_Type_Templates" title="Custom Post Type Templates">Reference.</a>', 'cPostonomy'),
 		)
 	);
 	add_settings_field(
 		'historyJS_disable',
-		__( 'Disable History.js', 'fCPT' ),
-		'fCPT_historyJSDisable_callback',
-		'fCPT_plugin_filter_options',
+		__( 'Disable History.js', 'cPostonomy' ),
+		'cPostonomy_historyJSDisable_callback',
+		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('<a href="https://github.com/browserstate/history.js/" title="History JS plugin">History.js</a> is already included (by theme or plugin)', 'fCPT'),
+			__('<a href="https://github.com/browserstate/history.js/" title="History JS plugin">History.js</a> is already included (by theme or plugin)', 'cPostonomy'),
 		)
 	);
 	register_setting(
-		'fCPT_plugin_filter_options',
-		'fCPT_plugin_filter_options'
+		'cPostonomy_plugin_filter_options',
+		'cPostonomy_plugin_filter_options'
 	);
 }
-add_action( 'admin_init', 'fCPT_plugin_initialize_filter_options' );
+add_action( 'admin_init', 'cPostonomy_plugin_initialize_filter_options' );
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 // SECTION CALLBACKS
 // ==================================================================================================================================================
 
-function fCPT_cpt_options_callback() {
-	echo '<p>' . __( 'Create your custom post type by naming it. Hint: Theme-template to list all your cpt = archive-{your-cpt-name}.php &mdash; http://codex.wordpress.org/Post_Type_Templates', 'fCPT' ) . '</p>';
+function cPostonomy_cpt_options_callback() {
+	echo '<p>' . __( 'Create your custom post type by naming it. Hint: Theme-template to list all your cpt = archive-{your-cpt-name}.php &mdash; http://codex.wordpress.org/Post_Type_Templates', 'cPostonomy' ) . '</p>';
 }
 
-function fCPT_tax_options_callback() {
-	echo '<p>' . __( 'Create a hierarchical custom taxonomy by naming it. It will be associated to your custom post type and behave like categories. Enter a custom slug (optional).', 'fCPT' ) . '</p>';
+function cPostonomy_tax_options_callback() {
+	echo '<p>' . __( 'Create a hierarchical custom taxonomy by naming it. It will be associated to your custom post type and behave like categories. Enter a custom slug (optional).', 'cPostonomy' ) . '</p>';
 }
 
-function fCPT_filter_options_callback() {
-	echo '<p>' . __( 'Filter a list of custom post types by taxonomy terms. Used with <a href="">fCPT custom template tags.</a> This feature is optional.', 'fCPT' ) . '</p>';
+function cPostonomy_filter_options_callback() {
+	echo '<p>' . __( 'Filter a list of custom post types by taxonomy terms. Used with <a href="">cPostonomy custom template tags.</a> This feature is optional.', 'cPostonomy' ) . '</p>';
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -225,61 +225,61 @@ function fCPT_filter_options_callback() {
 
 // CPT ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_cptname_callback() {
-	$options = get_option( 'fCPT_plugin_cpt_options' );
+function cPostonomy_cptname_callback() {
+	$options = get_option( 'cPostonomy_plugin_cpt_options' );
 	$cptName = '';
 	if(isset($options['cpt_name'])) {
 		$cptName = $options['cpt_name'];
 	}
-	echo '<input type="text" id="cpt_name" name="fCPT_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
+	echo '<input type="text" id="cpt_name" name="cPostonomy_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
 }
 
-function fCPT_cptHierarchical_callback($args) {
-	$options = get_option('fCPT_plugin_cpt_options');
-	$html = '<input type="checkbox" id="hierarchical" name="fCPT_plugin_cpt_options[hierarchical]" value="1" ' . checked(1, isset($options['hierarchical']) ? $options['hierarchical'] : 0, false).'/>';
+function cPostonomy_cptHierarchical_callback($args) {
+	$options = get_option('cPostonomy_plugin_cpt_options');
+	$html = '<input type="checkbox" id="hierarchical" name="cPostonomy_plugin_cpt_options[hierarchical]" value="1" ' . checked(1, isset($options['hierarchical']) ? $options['hierarchical'] : 0, false).'/>';
 	$html .= '<label for="hierarchical">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
 // TAX ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_taxname_callback() {
-	$options = get_option( 'fCPT_plugin_tax_options' );
+function cPostonomy_taxname_callback() {
+	$options = get_option( 'cPostonomy_plugin_tax_options' );
 	$taxName = '';
 	if(isset($options['tax_name'])) {
 		$taxName = $options['tax_name'];
 	}
-	echo '<input type="text" id="tax_name" name="fCPT_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
+	echo '<input type="text" id="tax_name" name="cPostonomy_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
 }
 
-function fCPT_slugname_callback() {
-	$options = get_option( 'fCPT_plugin_tax_options' );
+function cPostonomy_slugname_callback() {
+	$options = get_option( 'cPostonomy_plugin_tax_options' );
 	$taxSlug = '';
 	if(isset($options['slug_name'])) {
 		$taxSlug = $options['slug_name'];
 	}
-	echo '<input type="text" id="slug_name" name="fCPT_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
+	echo '<input type="text" id="slug_name" name="cPostonomy_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
 }
 
 // FILTERS ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function fCPT_filtersEnable_callback($args) {
-	$options = get_option('fCPT_plugin_filter_options');
-	$html = '<input type="checkbox" id="filters_enable" name="fCPT_plugin_filter_options[filters_enable]" value="1" ' . checked(1, isset($options['filters_enable']) ? $options['filters_enable'] : 0, false) . '/>';
+function cPostonomy_filtersEnable_callback($args) {
+	$options = get_option('cPostonomy_plugin_filter_options');
+	$html = '<input type="checkbox" id="filters_enable" name="cPostonomy_plugin_filter_options[filters_enable]" value="1" ' . checked(1, isset($options['filters_enable']) ? $options['filters_enable'] : 0, false) . '/>';
 	$html .= '<label for="filters_enable">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
-function fCPT_cptTemplateOnly_callback($args) {
-	$options = get_option('fCPT_plugin_filter_options');
-	$html = '<input type="checkbox" id="cpt_template_only" name="fCPT_plugin_filter_options[cpt_template_only]" value="1" ' . checked(1, isset( $options['cpt_template_only']) ? $options['cpt_template_only'] : 0, false) . '/>';
+function cPostonomy_cptTemplateOnly_callback($args) {
+	$options = get_option('cPostonomy_plugin_filter_options');
+	$html = '<input type="checkbox" id="cpt_template_only" name="cPostonomy_plugin_filter_options[cpt_template_only]" value="1" ' . checked(1, isset( $options['cpt_template_only']) ? $options['cpt_template_only'] : 0, false) . '/>';
 	$html .= '<label for="cpt_template_only">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
-function fCPT_historyJSDisable_callback($args) {
-	$options = get_option('fCPT_plugin_filter_options');
-	$html = '<input type="checkbox" id="historyJS_disable" name="fCPT_plugin_filter_options[historyJS_disable]" value="1" ' . checked( 1, isset($options['historyJS_disable']) ? $options['historyJS_disable'] : 0, false) . '/>';
+function cPostonomy_historyJSDisable_callback($args) {
+	$options = get_option('cPostonomy_plugin_filter_options');
+	$html = '<input type="checkbox" id="historyJS_disable" name="cPostonomy_plugin_filter_options[historyJS_disable]" value="1" ' . checked( 1, isset($options['historyJS_disable']) ? $options['historyJS_disable'] : 0, false) . '/>';
 	$html .= '<label for="historyJS_disable">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
@@ -299,7 +299,7 @@ function validate_sanitize_input($input) {
 }
 
 function get_cpt_options_value($fieldID, $sanitize_key=''){
-	$optionsCpt = get_option('fCPT_plugin_cpt_options');
+	$optionsCpt = get_option('cPostonomy_plugin_cpt_options');
 	if($fieldID === 'cpt_name' && $sanitize_key === ''){
 		$value = $optionsCpt[$fieldID] != '' ? $optionsCpt[$fieldID] : 'Portfolio';
 	} elseif($fieldID === 'cpt_name' && $sanitize_key === 'sanitize_key') {
@@ -311,7 +311,7 @@ function get_cpt_options_value($fieldID, $sanitize_key=''){
 }
 
 function get_tax_options_value($fieldID, $sanitize_key=''){
-	$optionsTax = get_option('fCPT_plugin_tax_options');
+	$optionsTax = get_option('cPostonomy_plugin_tax_options');
 	if($fieldID === 'tax_name' && $sanitize_key === ''){
 		$value = $optionsTax['tax_name'] != '' ? $optionsTax['tax_name'] : 'Sections';
 	} elseif($fieldID === 'tax_name' && $sanitize_key === 'sanitize_key'){
@@ -323,7 +323,7 @@ function get_tax_options_value($fieldID, $sanitize_key=''){
 }
 
 function get_filter_options_value($fieldID){
-	$optionsFilter = get_option('fCPT_plugin_filter_options');
+	$optionsFilter = get_option('cPostonomy_plugin_filter_options');
 	$value = isset($optionsFilter[$fieldID]) && intval($optionsFilter[$fieldID]);
 	return $value;
 }
