@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Custom Postonomy
-Plugin URI: http:// http://note-to-helf.com/cPostonomy
+Plugin URI: http://note-to-helf.com/custom-postonomy/
 Description: Creates a custom post type along with an associated (hierarchal) custom taxonomy. Use ajax to filter posts by taxonomy term (optional). 
 Author: Samuel Brynolf
 Author URI: http://note-to-helf.com
