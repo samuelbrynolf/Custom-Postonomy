@@ -56,7 +56,7 @@ function cPostonomy_plugin_default_cpt_options() {
 
 function cPostonomy_plugin_default_tax_options() {
 	$defaults = array(
-		'tax_name'  => 'sections',
+		'tax_name'  => 'Sections',
 		'slug_name'  => 'portfolio-sections',
 		'hierarchical' => 0,
 	);
