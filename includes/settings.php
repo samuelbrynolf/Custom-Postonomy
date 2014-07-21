@@ -47,7 +47,7 @@ function cPostonomy_plugin_menu($active_tab = '') { ?>
 
 function cPostonomy_plugin_default_cpt_options() {
 	$defaults = array(
-		'cpt_name'  => 'Portfolio',
+		'cpt_name'  => 'Portfolio'
 	);
 	return apply_filters( 'cPostonomy_plugin_default_cpt_options', $defaults );
 }
@@ -96,7 +96,7 @@ function cPostonomy_plugin_initialize_cpt_options() {
 		'cPostonomy_plugin_cpt_options',
 		'cpt_settings_section',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'cPostonomy' ),
+			__( 'Blank = "Portfolio"', 'cPostonomy' ),
 		)
 	);
 	add_settings_field(
@@ -136,7 +136,7 @@ function cPostonomy_plugin_initialize_tax_options() {
 		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'cPostonomy' ),
+			__( 'Blank = "Sections"', 'cPostonomy' ),
 		)
 	);
 	add_settings_field(
@@ -146,7 +146,7 @@ function cPostonomy_plugin_initialize_tax_options() {
 		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'cPostonomy' ),
+			__( 'Blank = "portfolio-sections"', 'cPostonomy' ),
 		)
 	);
 	register_setting(
@@ -228,14 +228,14 @@ function cPostonomy_filter_options_callback() {
 
 // CPT ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function cPostonomy_cptname_callback() {
+function cPostonomy_cptname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_cpt_options' );
 	$cptName = '';
 	if(isset($options['cpt_name'])) {
 		$cptName = $options['cpt_name'];
 	}
 	$html = '<input type="text" id="cpt_name" name="cPostonomy_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
-	//$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
+	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
@@ -248,25 +248,25 @@ function cPostonomy_cptHierarchical_callback($args) {
 
 // TAX ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function cPostonomy_taxname_callback() {
+function cPostonomy_taxname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
 	$taxSlug = '';
 	if(isset($options['tax_name'])) {
 		$taxName = $options['tax_name'];
 	}
 	$html = '<input type="text" id="tax_name" name="cPostonomy_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
-	//$html .= '<label for="tax_name">&nbsp;'  . $args[0] . '</label>';
+	$html .= '<label for="tax_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
-function cPostonomy_slugname_callback() {
+function cPostonomy_slugname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
 	$taxName = '';
 	if(isset($options['slug_name'])) {
 		$taxSlug = $options['slug_name'];
 	}
 	$html = '<input type="text" id="slug_name" name="cPostonomy_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
-	//$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
+	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 
