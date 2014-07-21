@@ -106,7 +106,7 @@ function cPostonomy_plugin_initialize_cpt_options() {
 		'cPostonomy_plugin_cpt_options', // The page on which this option will be displayed
 		'cpt_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Default: Order by date', 'cPostonomy' ),
+			__('Enables to loop posts by menu order. <a href="http://code.tutsplus.com/articles/quick-tip-hierarchical-custom-post-types-not-working-for-you--wp-26508" target="_blank">Reference</a>', 'cPostonomy'),
 		)
 	);
 	register_setting(
@@ -186,7 +186,7 @@ function cPostonomy_plugin_initialize_filter_options() {
 		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('Run filter-scripts on custom template only. <a href="http://codex.wordpress.org/Post_Type_Templates" title="Custom Post Type Templates">Reference.</a>', 'cPostonomy'),
+			__('Run filter-scripts on custom template only. <a href="http://codex.wordpress.org/Post_Type_Templates" title="Custom Post Type Templates" target="_blank">Reference.</a>', 'cPostonomy'),
 		)
 	);
 	add_settings_field(
@@ -196,7 +196,7 @@ function cPostonomy_plugin_initialize_filter_options() {
 		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('<a href="https://github.com/browserstate/history.js/" title="History JS plugin">History.js</a> is already included (by theme or plugin)', 'cPostonomy'),
+			__('<a href="https://github.com/browserstate/history.js/" title="History JS plugin" target="_blank">History.js</a> is already included (by theme or plugin)', 'cPostonomy'),
 		)
 	);
 	register_setting(
