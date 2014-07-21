@@ -1,7 +1,7 @@
 <?php function cPostonomy_example_plugin_menu() {
 	add_plugins_page(
-		'cPostonomy Plugin',
-		'cPostonomy Plugin',
+		'Custom Postonomy',
+		'Custom Postonomy',
 		'manage_options',
 		'cPostonomy_plugin_options',
 		'cPostonomy_plugin_menu'
@@ -12,7 +12,7 @@ add_action('admin_menu', 'cPostonomy_example_plugin_menu');
 function cPostonomy_plugin_menu($active_tab = '') { ?>
 	<div class="wrap">
 		<div id="icon-plugins" class="icon32"></div>
-		<h2><?php _e('Configure cPostonomy-plugin', 'cPostonomy'); ?></h2>
+		<h2><?php _e('Configure Custom Postonomy', 'cPostonomy'); ?></h2>
 		<?php settings_errors(); ?>
 		<?php if(isset($_GET['tab'])) {
 		$active_tab = $_GET[ 'tab' ];
@@ -47,7 +47,7 @@ function cPostonomy_plugin_menu($active_tab = '') { ?>
 
 function cPostonomy_plugin_default_cpt_options() {
 	$defaults = array(
-		'cpt_name'  => 'portfolio',
+		'cpt_name'  => 'Portfolio',
 	);
 	return apply_filters( 'cPostonomy_plugin_default_cpt_options', $defaults );
 }
@@ -85,7 +85,7 @@ function cPostonomy_plugin_initialize_cpt_options() {
 	}
 	add_settings_section(
 		'cpt_settings_section',
-		__( 'Create custom post type', 'cPostonomy' ),
+		__( '', 'cPostonomy' ),
 		'cPostonomy_cpt_options_callback',
 		'cPostonomy_plugin_cpt_options'
 	);
@@ -94,7 +94,10 @@ function cPostonomy_plugin_initialize_cpt_options() {
 		'Name',
 		'cPostonomy_cptname_callback',
 		'cPostonomy_plugin_cpt_options',
-		'cpt_settings_section'
+		'cpt_settings_section',
+		array(        // The array of arguments to pass to the callback. In this case, just a description.
+			__( 'Blank = "Portfolio"', 'cPostonomy' ),
+		)
 	);
 	add_settings_field(
 		'hierarchical',      // ID used to identify the field throughout the plugin
@@ -103,7 +106,7 @@ function cPostonomy_plugin_initialize_cpt_options() {
 		'cPostonomy_plugin_cpt_options', // The page on which this option will be displayed
 		'cpt_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Order posts by menu. (Default: Order by date)', 'cPostonomy' ),
+			__( 'Default: Order by date', 'cPostonomy' ),
 		)
 	);
 	register_setting(
@@ -122,7 +125,7 @@ function cPostonomy_plugin_initialize_tax_options() {
 	}
 	add_settings_section(
 		'tax_settings_section',   // ID used to identify this section and with which to register options
-		__( 'Create custom taxonomy', 'cPostonomy' ),  // Title to be displayed on the administration page
+		__( '', 'cPostonomy' ),  // Title to be displayed on the administration page
 		'cPostonomy_tax_options_callback', // Callback used to render the description of the section
 		'cPostonomy_plugin_tax_options'  // Page on which to add this section of options
 	);
@@ -133,17 +136,17 @@ function cPostonomy_plugin_initialize_tax_options() {
 		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'cPostonomy' ),
+			__( 'Blank = "Sections"', 'cPostonomy' ),
 		)
 	);
 	add_settings_field(
 		'slug_name',      // ID used to identify the field throughout the plugin
-		__( 'Custom slug', 'cPostonomy' ),       // The label to the left of the option interface element
+		__( 'Slug', 'cPostonomy' ),       // The label to the left of the option interface element
 		'cPostonomy_slugname_callback', // The name of the function responsible for rendering the option interface
 		'cPostonomy_plugin_tax_options', // The page on which this option will be displayed
 		'tax_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( '', 'cPostonomy' ),
+			__( 'Blank = "portfolio-sections"', 'cPostonomy' ),
 		)
 	);
 	register_setting(
@@ -162,7 +165,7 @@ function cPostonomy_plugin_initialize_filter_options() {
 	}
 	add_settings_section(
 		'filter_settings_section',
-		__( 'Set up filters for a list of custom post types.', 'cPostonomy' ),
+		__( '', 'cPostonomy' ),
 		'cPostonomy_filter_options_callback',
 		'cPostonomy_plugin_filter_options'
 	);
@@ -208,15 +211,15 @@ add_action( 'admin_init', 'cPostonomy_plugin_initialize_filter_options' );
 // ==================================================================================================================================================
 
 function cPostonomy_cpt_options_callback() {
-	echo '<p>' . __( 'Create your custom post type by naming it. Hint: Theme-template to list all your cpt = archive-{your-cpt-name}.php &mdash; http://codex.wordpress.org/Post_Type_Templates', 'cPostonomy' ) . '</p>';
+	echo '<p>' . __( '', 'cPostonomy' ) . '</p>';
 }
 
 function cPostonomy_tax_options_callback() {
-	echo '<p>' . __( 'Create a hierarchical custom taxonomy by naming it. It will be associated to your custom post type and behave like categories. Enter a custom slug (optional).', 'cPostonomy' ) . '</p>';
+	echo '<p>' . __( '', 'cPostonomy' ) . '</p>';
 }
 
 function cPostonomy_filter_options_callback() {
-	echo '<p>' . __( 'Filter a list of custom post types by taxonomy terms. Used with <a href="">cPostonomy custom template tags.</a> This feature is optional.', 'cPostonomy' ) . '</p>';
+	echo '<p>' . __( 'Use taxonomy terms to filter posts. Used with <a href="http://note-to-helf.com/custom-postonomy#template-tags" target="_blank">custom template tags.</a> This feature is optional.', 'cPostonomy' ) . '</p>';
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -225,13 +228,15 @@ function cPostonomy_filter_options_callback() {
 
 // CPT ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function cPostonomy_cptname_callback() {
+function cPostonomy_cptname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_cpt_options' );
 	$cptName = '';
 	if(isset($options['cpt_name'])) {
 		$cptName = $options['cpt_name'];
 	}
-	echo '<input type="text" id="cpt_name" name="cPostonomy_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
+	$html = '<input type="text" id="cpt_name" name="cPostonomy_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
+	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
+	echo $html;
 }
 
 function cPostonomy_cptHierarchical_callback($args) {
@@ -243,22 +248,26 @@ function cPostonomy_cptHierarchical_callback($args) {
 
 // TAX ------------------------------------------------------------------------------------------------------------------------------------------------
 
-function cPostonomy_taxname_callback() {
+function cPostonomy_taxname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
-	$taxName = '';
+	$taxSlug = '';
 	if(isset($options['tax_name'])) {
 		$taxName = $options['tax_name'];
 	}
-	echo '<input type="text" id="tax_name" name="cPostonomy_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
+	$html = '<input type="text" id="tax_name" name="cPostonomy_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
+	$html .= '<label for="tax_name">&nbsp;'  . $args[0] . '</label>';
+	echo $html;
 }
 
-function cPostonomy_slugname_callback() {
+function cPostonomy_slugname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
-	$taxSlug = '';
+	$taxName = '';
 	if(isset($options['slug_name'])) {
 		$taxSlug = $options['slug_name'];
 	}
-	echo '<input type="text" id="slug_name" name="cPostonomy_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
+	$html = '<input type="text" id="slug_name" name="cPostonomy_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
+	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
+	echo $html;
 }
 
 // FILTERS ------------------------------------------------------------------------------------------------------------------------------------------------
