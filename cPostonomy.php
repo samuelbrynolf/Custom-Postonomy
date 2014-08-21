@@ -36,7 +36,13 @@ class cPostonomy {
 		function cPostonomy_scripts(){
 			wp_register_script('bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
 			wp_register_script('functionsMin', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			enqueue_conditionals();
+			// enqueue_conditionals();
+			// edit for paginate script --------
+			wp_register_script('history', plugins_url( '/js/history.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script('paginate', plugins_url( '/js/paginate.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_enqueue_script('history');
+			wp_enqueue_script('paginate');
+			// ------
 		}
 
 		if(get_filter_options_value('filters_enable') == '1'){
