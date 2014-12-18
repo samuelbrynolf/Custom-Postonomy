@@ -2,7 +2,7 @@
 /*
 Plugin Name: Custom Postonomy
 Plugin URI: http://note-to-helf.com/custom-postonomy/
-Description: Creates a custom post type along with an associated custom taxonomy. Use ajax to filter posts by taxonomy term (optional). 
+Description: Creates a custom post type along with an associated (hierarchal) custom taxonomy. Use ajax to filter posts by taxonomy term (optional). 
 Author: Samuel Brynolf
 Author URI: http://note-to-helf.com
 Version: 0.1.0
@@ -28,21 +28,17 @@ class cPostonomy {
 		require_once(cPostonomy_INCLUDES . 'settings.php');
 		require_once(cPostonomy_INCLUDES . 'post-type.php');
 		require_once(cPostonomy_INCLUDES . 'taxonomy.php');
-		require_once(cPostonomy_INCLUDES . 'template-tags.php');
+		require_once(cPostonomy_INCLUDES . 'functions.php');
 		require_once(cPostonomy_INCLUDES . 'enqueue_conditionals.php');
 	}
 
 	public function scripts(){
 		function cPostonomy_scripts(){
-			wp_register_script('bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			wp_register_script('functionsMin', plugins_url( '/js/functions.min.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			// enqueue_conditionals();
-			// edit for paginate script --------
-			wp_register_script('history', plugins_url( '/js/history.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			wp_register_script('paginate', plugins_url( '/js/paginate.js', __FILE__ ), array('jquery'), ' ', TRUE );
-			wp_enqueue_script('history');
-			wp_enqueue_script('paginate');
-			// ------
+			wp_register_script('historyJS', plugins_url( '/js/jquery.history.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script('tappy', plugins_url( '/js/tappy.js', __FILE__ ), array('jquery'), ' ', TRUE );
+			wp_register_script('bundled', plugins_url( '/js/bundled.min.js', __FILE__ ), array('jquery'), ' ', TRUE ); // ej senaste tappy
+			wp_register_script('functionsMin', plugins_url( '/js/functions.js', __FILE__ ), array('jquery'), ' ', TRUE ); // återställ!
+			enqueue_conditionals();
 		}
 
 		if(get_filter_options_value('filters_enable') == '1'){

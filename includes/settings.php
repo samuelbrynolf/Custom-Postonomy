@@ -26,7 +26,7 @@ function cPostonomy_plugin_menu($active_tab = '') { ?>
 		<h2 class="nav-tab-wrapper">
 			<a href="?page=cPostonomy_plugin_options&tab=cpt_options" class="nav-tab <?php echo $active_tab == 'cpt_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Post Type', 'cPostonomy' ); ?></a>
 			<a href="?page=cPostonomy_plugin_options&tab=tax_options" class="nav-tab <?php echo $active_tab == 'tax_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Custom Taxonomy', 'cPostonomy' ); ?></a>
-			<a href="?page=cPostonomy_plugin_options&tab=filter_options" class="nav-tab <?php echo $active_tab == 'filter_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Filters', 'cPostonomy' ); ?></a>
+			<a href="?page=cPostonomy_plugin_options&tab=filter_options" class="nav-tab <?php echo $active_tab == 'filter_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Misc', 'cPostonomy' ); ?></a>
 		</h2>
 		<form method="post" action="options.php">
 		<?php if($active_tab == 'tax_options') {
@@ -47,7 +47,7 @@ function cPostonomy_plugin_menu($active_tab = '') { ?>
 
 function cPostonomy_plugin_default_cpt_options() {
 	$defaults = array(
-		'cpt_name'  => 'Portfolio'
+		'cpt_name'  => 'Portfolio',
 	);
 	return apply_filters( 'cPostonomy_plugin_default_cpt_options', $defaults );
 }
@@ -56,7 +56,7 @@ function cPostonomy_plugin_default_cpt_options() {
 
 function cPostonomy_plugin_default_tax_options() {
 	$defaults = array(
-		'tax_name'  => 'Sections',
+		'tax_name'  => 'sections',
 		'slug_name'  => 'portfolio-sections',
 		'hierarchical' => 0,
 	);
@@ -68,7 +68,7 @@ function cPostonomy_plugin_default_tax_options() {
 function cPostonomy_plugin_default_filter_options() {
 	$defaults = array(
 		'filters_enable' => 0,
-		'cpt_template_only' => 0,
+		'enable_pagination' => 0,
 		'historyJS_disable' => 0,
 	);
 	return apply_filters( 'cPostonomy_plugin_default_filter_options', $defaults );
@@ -106,7 +106,7 @@ function cPostonomy_plugin_initialize_cpt_options() {
 		'cPostonomy_plugin_cpt_options', // The page on which this option will be displayed
 		'cpt_settings_section',   // The name of the section to which this field belongs
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__('Enables to loop posts by menu order. <a href="http://code.tutsplus.com/articles/quick-tip-hierarchical-custom-post-types-not-working-for-you--wp-26508" target="_blank">Reference</a>', 'cPostonomy'),
+			__( 'Default: Order by date', 'cPostonomy' ),
 		)
 	);
 	register_setting(
@@ -171,22 +171,22 @@ function cPostonomy_plugin_initialize_filter_options() {
 	);
 	add_settings_field(
 		'filters_enable',
-		__( 'Enable filters', 'cPostonomy' ),
+		__( 'Ajax-powered navigation', 'cPostonomy' ),
 		'cPostonomy_filtersEnable_callback',
 		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('', 'cPostonomy'),
+			__('Smoother experience for pagination (All archive-templates), and for custom template-tags [LINK to templatetags]', 'cPostonomy'),
 		)
 	);
 	add_settings_field(
-		'cpt_template_only',
-		__( 'Custom template only', 'cPostonomy' ),
-		'cPostonomy_cptTemplateOnly_callback',
+		'enable_pagination',
+		__( 'Paginate custom posts', 'cPostonomy' ),
+		'cPostonomy_cptPaginate_callback',
 		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('Run filter-scripts on custom template only. <a href="http://codex.wordpress.org/Post_Type_Templates" title="Custom Post Type Templates" target="_blank">Reference.</a>', 'cPostonomy'),
+			__('Show all or paginate by your default settting', 'cPostonomy'),
 		)
 	);
 	add_settings_field(
@@ -196,7 +196,7 @@ function cPostonomy_plugin_initialize_filter_options() {
 		'cPostonomy_plugin_filter_options',
 		'filter_settings_section',
 		array(
-			__('<a href="https://github.com/browserstate/history.js/" title="History JS plugin" target="_blank">History.js</a> is already included (by theme or plugin)', 'cPostonomy'),
+			__('Disable <a href="https://github.com/browserstate/history.js/" title="History JS plugin">History.js</a> since its already included (?)', 'cPostonomy'),
 		)
 	);
 	register_setting(
@@ -219,7 +219,7 @@ function cPostonomy_tax_options_callback() {
 }
 
 function cPostonomy_filter_options_callback() {
-	echo '<p>' . __( 'Use taxonomy terms to filter posts. Used with <a href="http://note-to-helf.com/custom-postonomy#template-tags" target="_blank">custom template tags.</a> This feature is optional.', 'cPostonomy' ) . '</p>';
+	echo '<p>' . __( '', 'cPostonomy' ) . '</p>';
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -230,7 +230,10 @@ function cPostonomy_filter_options_callback() {
 
 function cPostonomy_cptname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_cpt_options' );
-	$cptName = $options['cpt_name'];
+	$cptName = '';
+	if(isset($options['cpt_name'])) {
+		$cptName = $options['cpt_name'];
+	}
 	$html = '<input type="text" id="cpt_name" name="cPostonomy_plugin_cpt_options[cpt_name]" value="' . $cptName . '" />';
 	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
@@ -247,7 +250,10 @@ function cPostonomy_cptHierarchical_callback($args) {
 
 function cPostonomy_taxname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
-	$taxName = $options['tax_name'];
+	$taxSlug = '';
+	if(isset($options['tax_name'])) {
+		$taxName = $options['tax_name'];
+	}
 	$html = '<input type="text" id="tax_name" name="cPostonomy_plugin_tax_options[tax_name]" value="' . $taxName . '" />';
 	$html .= '<label for="tax_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
@@ -255,7 +261,10 @@ function cPostonomy_taxname_callback($args) {
 
 function cPostonomy_slugname_callback($args) {
 	$options = get_option( 'cPostonomy_plugin_tax_options' );
-	$taxSlug = $options['slug_name'];
+	$taxName = '';
+	if(isset($options['slug_name'])) {
+		$taxSlug = $options['slug_name'];
+	}
 	$html = '<input type="text" id="slug_name" name="cPostonomy_plugin_tax_options[slug_name]" value="' . $taxSlug . '" />';
 	$html .= '<label for="slug_name">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
@@ -270,10 +279,10 @@ function cPostonomy_filtersEnable_callback($args) {
 	echo $html;
 }
 
-function cPostonomy_cptTemplateOnly_callback($args) {
+function cPostonomy_cptPaginate_callback($args) {
 	$options = get_option('cPostonomy_plugin_filter_options');
-	$html = '<input type="checkbox" id="cpt_template_only" name="cPostonomy_plugin_filter_options[cpt_template_only]" value="1" ' . checked(1, isset( $options['cpt_template_only']) ? $options['cpt_template_only'] : 0, false) . '/>';
-	$html .= '<label for="cpt_template_only">&nbsp;'  . $args[0] . '</label>';
+	$html = '<input type="checkbox" id="enable_pagination" name="cPostonomy_plugin_filter_options[enable_pagination]" value="1" ' . checked(1, isset( $options['enable_pagination']) ? $options['enable_pagination'] : 0, false) . '/>';
+	$html .= '<label for="enable_pagination">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
 

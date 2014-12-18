@@ -9,7 +9,7 @@
 		$args = array(
 			'label'               => get_cpt_options_value('cpt_name'),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes'),
+			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields'),
 			'hierarchical'        => get_cpt_options_value('hierarchical'),
 			'public'              => true,
 			'show_ui'             => true,
