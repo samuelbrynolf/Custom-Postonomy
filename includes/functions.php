@@ -49,13 +49,15 @@ function loop_part_cPostonomy($templatePart = 'cPostonomy-part'){
 			$taxpageCount = '';
 		}
 		
-		echo '<ul id="js-cptItems" class="m-cptItems"'.$taxpageCount.'>';
-			while (have_posts()) { the_post();
-				echo '<li class="m-cptItems__li">';
-					get_template_part($templatePart);
-				echo '</li>';
-			}
-		echo '</ul>';
+		echo '<section id="js-cptWrapper">';
+			echo '<div id="js-cptItems" class="m-cptItems"'.$taxpageCount.'>';
+				while (have_posts()) { the_post();
+					echo '<div class="m-cptItems__div">';
+						get_template_part($templatePart);
+					echo '</div>';
+				}
+			echo '</div>';
+		echo '</section>';
 	} else {
 		echo '<p>No items added yet.</p>';
 	}
